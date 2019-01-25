@@ -1,4 +1,4 @@
-from flask import Blueprint, url_for, render_template, request, Response, redirect
+from flask import Blueprint, url_for, render_template, request, Response, redirect, session
 
 blue = Blueprint('first_blue', __name__)
 
@@ -8,7 +8,8 @@ def index():
 
 @blue.route('/home/')
 def home():
-    username = request.cookies.get("user")
+    # username = request.cookies.get("user")
+    username = session.get('user')
     return render_template('home.html', username=username)
 
 @blue.route('/login/', methods=["GET", "POST"])
@@ -18,7 +19,8 @@ def login():
     elif request.method == "POST":
         username = request.form.get("username")
         resp = Response(response="Login Success: %s" % username)
-        resp.set_cookie('user', username)
+        # resp.set_cookie('user', username)
+        session['user'] = username
         return resp
         
 
